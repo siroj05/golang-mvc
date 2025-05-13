@@ -48,13 +48,19 @@ func FindCategoryById(id int) (entities.Category, error) {
 	return category, err
 }
 
-func UpdateCategory(category entities.Category) error {
+func UpdateCategory(category entities.Category) bool {
 	ctx := context.Background()
 	script := "UPDATE categories SET name = ?, updated_at = ? WHERE id = ?"
-	_, err := config.DB.ExecContext(ctx, script, category.Name, category.UpdatedAt.Time, category.Id)
+	query, err := config.DB.ExecContext(ctx, script, category.Name, category.UpdatedAt.Time, category.Id)
 	if err != nil {
 		panic(err)
 	}
 
-	return nil
+	// next bakal begini semua
+	result, err := query.RowsAffected()
+	if err != nil {
+		panic(err)
+	}
+
+	return result > 0
 }

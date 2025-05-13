@@ -75,9 +75,12 @@ func Update(w http.ResponseWriter, r *http.Request) {
 		Time:  time.Now(),
 		Valid: true,
 	}
-	err := categorymodel.UpdateCategory(category)
-	if err != nil {
-		panic(err)
+	ok := categorymodel.UpdateCategory(category)
+
+	// next bakal begini semua
+	if !ok {
+		http.Redirect(w, r, r.Header.Get("Referer"), http.StatusSeeOther)
+		return
 	}
 
 	http.Redirect(w, r, "/categories", http.StatusSeeOther)
