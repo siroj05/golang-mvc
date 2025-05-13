@@ -18,6 +18,7 @@ func Index(w http.ResponseWriter, r *http.Request) {
 	}
 	temp.Execute(w, data)
 }
+
 func Add(w http.ResponseWriter, r *http.Request) {
 
 }

@@ -1,10 +1,13 @@
 package entities
 
-import "time"
+import (
+	"database/sql"
+	"time"
+)
 
 type Category struct {
 	Id        uint
 	Name      string
 	CreatedAt time.Time
-	UpdatedAt time.Time
+	UpdatedAt sql.NullTime
 }
