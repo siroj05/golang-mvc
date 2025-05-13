@@ -3,8 +3,8 @@ package categorycontroller
 import (
 	"golang-web-native/entities"
 	categorymodel "golang-web-native/models/category-model"
-	"log"
 	"net/http"
+	"strconv"
 	"text/template"
 )
 
@@ -31,11 +31,7 @@ func AddCategoryForm(w http.ResponseWriter, r *http.Request) {
 }
 
 func Add(w http.ResponseWriter, r *http.Request) {
-	log.Println("Masuk sini ==> ")
 	name := r.FormValue("product")
-	log.Println(r.Form)
-	log.Println(name)
-
 	category := entities.Category{Name: name}
 	err := categorymodel.AddCategory(category)
 	if err != nil {
@@ -44,9 +40,27 @@ func Add(w http.ResponseWriter, r *http.Request) {
 	http.Redirect(w, r, "/categories", http.StatusSeeOther)
 }
 
+// edit
+func EditCategoryForm(w http.ResponseWriter, r *http.Request) {
+	id, _ := strconv.Atoi(r.URL.Query().Get("id"))
+
+	category, err := categorymodel.FindCategoryById(id)
+	if err != nil {
+		panic(err)
+	}
+
+	temp, err := template.ParseFiles("views/category/edit.html")
+	if err != nil {
+		panic(err)
+	}
+
+	temp.Execute(w, category)
+}
+
 func Edit(w http.ResponseWriter, r *http.Request) {
 
 }
+
 func Delete(w http.ResponseWriter, r *http.Request) {
 
 }

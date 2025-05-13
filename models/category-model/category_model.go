@@ -38,3 +38,10 @@ func AddCategory(category entities.Category) error {
 	}
 	return nil
 }
+
+func FindCategoryById(id int) (entities.Category, error) {
+	row := config.DB.QueryRow("SELECT id, name FROM categories WHERE id=?", id)
+	var category entities.Category
+	err := row.Scan(&category.Id, &category.Name)
+	return category, err
+}

@@ -18,6 +18,8 @@ func main() {
 
 	// panggil categories page
 	http.HandleFunc("/categories", categorycontroller.Index)
+
+	// add categories page
 	http.HandleFunc("/categories/add", func(w http.ResponseWriter, r *http.Request) {
 		if r.Method == http.MethodGet {
 			categorycontroller.AddCategoryForm(w, r)
@@ -25,7 +27,15 @@ func main() {
 			categorycontroller.Add(w, r)
 		}
 	})
-	// http.HandleFunc("/categories", categorycontroller.Delete)
+
+	// edit categories page
+	http.HandleFunc("/categories/edit", func(w http.ResponseWriter, r *http.Request) {
+		if r.Method == http.MethodGet {
+			categorycontroller.EditCategoryForm(w, r)
+		} else if r.Method == http.MethodPost {
+
+		}
+	})
 
 	log.Println("Server running on port 8080")
 	http.ListenAndServe(":8080", nil)
