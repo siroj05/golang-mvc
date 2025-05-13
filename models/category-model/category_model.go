@@ -30,7 +30,7 @@ func GetAll() []entities.Category {
 }
 
 // add
-func AddCategory(category entities.Category) error {
+func CreateCategory(category entities.Category) error {
 	ctx := context.Background()
 	script := "INSERT INTO categories(name, created_at) VALUES(?, ?)"
 	_, err := config.DB.ExecContext(ctx, script, category.Name, category.CreatedAt.Time)
@@ -48,7 +48,7 @@ func FindCategoryById(id int) (entities.Category, error) {
 	return category, err
 }
 
-func EditCategory(category entities.Category) error {
+func UpdateCategory(category entities.Category) error {
 	ctx := context.Background()
 	script := "UPDATE categories SET name = ?, updated_at = ? WHERE id = ?"
 	_, err := config.DB.ExecContext(ctx, script, category.Name, category.UpdatedAt.Time, category.Id)

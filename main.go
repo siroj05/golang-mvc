@@ -13,7 +13,6 @@ func main() {
 	config.ConnectDB()
 
 	// panggil home page
-
 	http.HandleFunc("/", homecontroller.Welcome)
 
 	// panggil categories page
@@ -22,18 +21,18 @@ func main() {
 	// add categories page
 	http.HandleFunc("/categories/add", func(w http.ResponseWriter, r *http.Request) {
 		if r.Method == http.MethodGet {
-			categorycontroller.AddCategoryForm(w, r)
+			categorycontroller.CreateCategoryForm(w, r)
 		} else if r.Method == http.MethodPost {
-			categorycontroller.Add(w, r)
+			categorycontroller.Create(w, r)
 		}
 	})
 
 	// edit categories page
 	http.HandleFunc("/categories/edit", func(w http.ResponseWriter, r *http.Request) {
 		if r.Method == http.MethodGet {
-			categorycontroller.EditCategoryForm(w, r)
+			categorycontroller.UpdateCategoryForm(w, r)
 		} else if r.Method == http.MethodPost {
-			categorycontroller.Edit(w, r)
+			categorycontroller.Update(w, r)
 		}
 	})
 

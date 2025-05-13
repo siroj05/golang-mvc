@@ -24,22 +24,22 @@ func Index(w http.ResponseWriter, r *http.Request) {
 }
 
 // ================================add============================
-func AddCategoryForm(w http.ResponseWriter, r *http.Request) {
-	temp, err := template.ParseFiles("views/category/add.html")
+func CreateCategoryForm(w http.ResponseWriter, r *http.Request) {
+	temp, err := template.ParseFiles("views/category/create.html")
 	if err != nil {
 		panic(err)
 	}
 	temp.Execute(w, nil)
 }
 
-func Add(w http.ResponseWriter, r *http.Request) {
+func Create(w http.ResponseWriter, r *http.Request) {
 	var category entities.Category
 	category.Name = r.FormValue("product")
 	category.CreatedAt = sql.NullTime{
 		Time:  time.Now(),
 		Valid: true,
 	}
-	err := categorymodel.AddCategory(category)
+	err := categorymodel.CreateCategory(category)
 	if err != nil {
 		panic(err)
 	}
@@ -49,7 +49,7 @@ func Add(w http.ResponseWriter, r *http.Request) {
 //===============================end of add==========================
 
 // ===============================edit===========================
-func EditCategoryForm(w http.ResponseWriter, r *http.Request) {
+func UpdateCategoryForm(w http.ResponseWriter, r *http.Request) {
 	id, _ := strconv.Atoi(r.URL.Query().Get("id"))
 
 	category, err := categorymodel.FindCategoryById(id)
@@ -57,7 +57,7 @@ func EditCategoryForm(w http.ResponseWriter, r *http.Request) {
 		panic(err)
 	}
 
-	temp, err := template.ParseFiles("views/category/edit.html")
+	temp, err := template.ParseFiles("views/category/update.html")
 	if err != nil {
 		panic(err)
 	}
@@ -65,7 +65,7 @@ func EditCategoryForm(w http.ResponseWriter, r *http.Request) {
 	temp.Execute(w, category)
 }
 
-func Edit(w http.ResponseWriter, r *http.Request) {
+func Update(w http.ResponseWriter, r *http.Request) {
 	name := r.FormValue("product")
 	id, _ := strconv.Atoi(r.URL.Query().Get("id"))
 	var category entities.Category
@@ -75,7 +75,7 @@ func Edit(w http.ResponseWriter, r *http.Request) {
 		Time:  time.Now(),
 		Valid: true,
 	}
-	err := categorymodel.EditCategory(category)
+	err := categorymodel.UpdateCategory(category)
 	if err != nil {
 		panic(err)
 	}
