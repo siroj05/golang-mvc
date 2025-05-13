@@ -33,7 +33,7 @@ func main() {
 		if r.Method == http.MethodGet {
 			categorycontroller.EditCategoryForm(w, r)
 		} else if r.Method == http.MethodPost {
-
+			categorycontroller.Edit(w, r)
 		}
 	})
 

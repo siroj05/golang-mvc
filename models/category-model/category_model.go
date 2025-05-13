@@ -29,19 +29,32 @@ func GetAll() []entities.Category {
 	return categories
 }
 
+// add
 func AddCategory(category entities.Category) error {
 	ctx := context.Background()
-	script := "INSERT INTO categories(name) VALUES(?)"
-	_, err := config.DB.ExecContext(ctx, script, category.Name)
+	script := "INSERT INTO categories(name, created_at) VALUES(?, ?)"
+	_, err := config.DB.ExecContext(ctx, script, category.Name, category.CreatedAt.Time)
 	if err != nil {
 		return err
 	}
 	return nil
 }
 
+// edit
 func FindCategoryById(id int) (entities.Category, error) {
 	row := config.DB.QueryRow("SELECT id, name FROM categories WHERE id=?", id)
 	var category entities.Category
 	err := row.Scan(&category.Id, &category.Name)
 	return category, err
+}
+
+func EditCategory(category entities.Category) error {
+	ctx := context.Background()
+	script := "UPDATE categories SET name = ?, updated_at = ? WHERE id = ?"
+	_, err := config.DB.ExecContext(ctx, script, category.Name, category.UpdatedAt.Time, category.Id)
+	if err != nil {
+		panic(err)
+	}
+
+	return nil
 }
