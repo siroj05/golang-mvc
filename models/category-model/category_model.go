@@ -30,14 +30,21 @@ func GetAll() []entities.Category {
 }
 
 // add
-func CreateCategory(category entities.Category) error {
+func CreateCategory(category entities.Category) bool {
 	ctx := context.Background()
 	script := "INSERT INTO categories(name, created_at) VALUES(?, ?)"
-	_, err := config.DB.ExecContext(ctx, script, category.Name, category.CreatedAt.Time)
+	query, err := config.DB.ExecContext(ctx, script, category.Name, category.CreatedAt.Time)
 	if err != nil {
-		return err
+		panic(err)
 	}
-	return nil
+
+	result, err := query.RowsAffected()
+
+	if err != nil {
+		panic(err)
+	}
+
+	return result > 0
 }
 
 // edit
@@ -63,4 +70,24 @@ func UpdateCategory(category entities.Category) bool {
 	}
 
 	return result > 0
+}
+
+// delete
+
+func DeleteCategory(id int) bool {
+	ctx := context.Background()
+	script := "DELETE FROM categories WHERE id = ?"
+	query, err := config.DB.ExecContext(ctx, script, id)
+	if err != nil {
+		panic(err)
+	}
+
+	result, err := query.RowsAffected()
+
+	if err != nil {
+		panic(err)
+	}
+
+	return result > 0
+
 }

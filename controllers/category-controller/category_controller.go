@@ -39,10 +39,13 @@ func Create(w http.ResponseWriter, r *http.Request) {
 		Time:  time.Now(),
 		Valid: true,
 	}
-	err := categorymodel.CreateCategory(category)
-	if err != nil {
-		panic(err)
+	ok := categorymodel.CreateCategory(category)
+
+	if !ok {
+		http.Redirect(w, r, r.Header.Get("Referer"), http.StatusSeeOther)
+		return
 	}
+
 	http.Redirect(w, r, "/categories", http.StatusSeeOther)
 }
 
@@ -89,5 +92,14 @@ func Update(w http.ResponseWriter, r *http.Request) {
 // =======================end of edit ====================
 
 func Delete(w http.ResponseWriter, r *http.Request) {
-
+	id, err := strconv.Atoi(r.URL.Query().Get("id"))
+	if err != nil {
+		panic(err)
+	}
+	ok := categorymodel.DeleteCategory(id)
+	if !ok {
+		http.Redirect(w, r, r.Header.Get("Referer"), http.StatusSeeOther)
+		return
+	}
+	http.Redirect(w, r, "/categories", http.StatusSeeOther)
 }
