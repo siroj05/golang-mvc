@@ -8,6 +8,9 @@ import (
 	"net/http"
 )
 
+// syntax fungsi
+// func (receiver T) NamaFungsi(param1 T1, param2 T2, ...) (return1 R1, return2 R2, ...)
+
 func main() {
 	log.Println("Connect..")
 	config.ConnectDB()
